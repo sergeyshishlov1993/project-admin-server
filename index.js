@@ -1,12 +1,36 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const addData = require("./router/addData");
-const updateData = require("./router/updateData");
+const addDataLink = require("./router/add-data-link");
+
+const updateData = require("./router/update-data");
+const updatePopular = require("./router/update-popular");
+const updateSale = require("./router/update-sale");
+const updatePartialData = require("./router/update_partial_data");
+
+const getPopularAndPromotional = require("./router/get-popular-and-promotional");
+const getCatalogData = require("./router/get-catalog-data");
+const getProductsBySubCategoryId = require("./router/get-products-by-id");
+
+const deletePopular = require("./router/delete-popular");
+const deleteSale = require("./router/delete-sale");
 
 app.use(cors());
-app.use(`/api/addData`, addData);
-app.use("/api/updateData", updateData);
+app.use(express.json());
+
+app.use(`/api/add-data-link`, addDataLink);
+app.use("/api/update-data", updateData);
+
+app.use("/products/get-popular-and-promotional", getPopularAndPromotional);
+app.use("/get-catalog-data", getCatalogData);
+app.use("/products/get-products-by-id", getProductsBySubCategoryId);
+
+app.use("/products/update-popular", updatePopular);
+app.use("/products/update-sale", updateSale);
+app.use("/products/update_partial_data", updatePartialData);
+
+app.use("/products/delete-popular", deletePopular);
+app.use("/products/delete-sale", deleteSale);
 
 app.get("/", (req, res) => {
   res.send("Привет, мир!");
