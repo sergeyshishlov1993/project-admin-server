@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const addDataLink = require("./router/add-data-link");
 
 const updateData = require("./router/update-data");
 const updatePopular = require("./router/update-popular");
@@ -15,10 +14,11 @@ const getProductsBySubCategoryId = require("./router/get-products-by-id");
 const deletePopular = require("./router/delete-popular");
 const deleteSale = require("./router/delete-sale");
 
+const updateOrCreateProduct = require("./router/updateOrCreateProduct ");
+
 app.use(cors());
 app.use(express.json());
 
-app.use(`/api/add-data-link`, addDataLink);
 app.use("/api/update-data", updateData);
 
 app.use("/products/get-popular-and-promotional", getPopularAndPromotional);
@@ -31,6 +31,8 @@ app.use("/products/update_partial_data", updatePartialData);
 
 app.use("/products/delete-popular", deletePopular);
 app.use("/products/delete-sale", deleteSale);
+
+app.use("/products/updateOrCreateProduct", updateOrCreateProduct);
 
 app.get("/", (req, res) => {
   res.send("Привет, мир!");
