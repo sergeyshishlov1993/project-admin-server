@@ -2,37 +2,45 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-const updateData = require("./router/update-data");
-const updatePopular = require("./router/update-popular");
-const updateSale = require("./router/update-sale");
-const updatePartialData = require("./router/update_partial_data");
-
-const getPopularAndPromotional = require("./router/get-popular-and-promotional");
-const getCatalogData = require("./router/get-catalog-data");
-const getProductsBySubCategoryId = require("./router/get-products-by-id");
-
-const deletePopular = require("./router/delete-popular");
-const deleteSale = require("./router/delete-sale");
-
-const updateOrCreateProduct = require("./router/updateOrCreateProduct ");
+const home = require("./router/home");
+const adminPage = require("./router/admin");
+const productsPage = require("./router/products");
+const sale = require("./router/sale");
+const bestseller = require("./router/bestseller");
+const feedback = require("./router/feedback");
+const newPost = require("./router/novaPoshta");
+const order = require("./router/orders");
+const sliderRouter = require("./router/slider");
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/update-data", updateData);
+//роут для админ панели
+app.use("/admin", adminPage);
 
-app.use("/products/get-popular-and-promotional", getPopularAndPromotional);
-app.use("/get-catalog-data", getCatalogData);
-app.use("/products/get-products-by-id", getProductsBySubCategoryId);
+//начальная странцы
+app.use("/home", home);
 
-app.use("/products/update-popular", updatePopular);
-app.use("/products/update-sale", updateSale);
-app.use("/products/update_partial_data", updatePartialData);
+//main slider
 
-app.use("/products/delete-popular", deletePopular);
-app.use("/products/delete-sale", deleteSale);
+app.use("/slider", sliderRouter);
 
-app.use("/products/updateOrCreateProduct", updateOrCreateProduct);
+//
+app.use("/products", productsPage);
+
+//распродвже
+app.use("/sale", sale);
+
+app.use("/feedback", feedback);
+
+//хит продаж
+app.use("/bestseller", bestseller);
+
+//api nova poshta
+app.use("/nova-poshta", newPost);
+
+//офрмление заказов
+app.use("/order", order);
 
 app.get("/", (req, res) => {
   res.send("Привет, мир!");

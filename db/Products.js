@@ -43,6 +43,16 @@ module.exports = function (sequelize) {
         type: Sequelize.DECIMAL(10, 2),
         defaultValue: 0,
       },
+
+      discount: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+
+      custom_product: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       timestamps: true,
