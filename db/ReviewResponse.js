@@ -7,7 +7,7 @@ module.exports = function (sequelize) {
       response_id: {
         type: Sequelize.UUID,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4, // Автоматична генерація UUID версії 4
+        defaultValue: Sequelize.UUIDV4,
       },
 
       review_id: {
@@ -32,8 +32,8 @@ module.exports = function (sequelize) {
       admin_response: {
         type: Sequelize.TINYINT(1),
         allowNull: false,
-        defaultValue: 0
-      }
+        defaultValue: 0,
+      },
     },
     {
       timestamps: true,

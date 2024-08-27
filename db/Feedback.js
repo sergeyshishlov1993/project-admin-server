@@ -7,7 +7,7 @@ module.exports = function (sequelize) {
       id: {
         type: Sequelize.UUID,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4, // Автоматична генерація UUID версії 4
+        defaultValue: Sequelize.UUIDV4,
       },
 
       name: {

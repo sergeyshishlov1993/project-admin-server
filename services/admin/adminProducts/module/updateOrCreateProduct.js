@@ -13,12 +13,20 @@ const {
 //наполняем дочернюю таблицу ссылок на изображение
 async function handlePictures(product_id, pictures) {
   await Pictures.destroy({ where: { product_id } });
-  const picturesData = (Array.isArray(pictures) ? pictures : [pictures]).map(
-    (picture) => ({
-      product_id,
-      pictures_name: picture,
-    })
+
+  // Фильтрация ссылок
+  const filteredPictures = (
+    Array.isArray(pictures) ? pictures : [pictures]
+  ).filter(
+    (picture) =>
+      !picture.includes("back360") && !picture.includes("product_video")
   );
+
+  const picturesData = filteredPictures.map((picture) => ({
+    product_id,
+    pictures_name: picture,
+  }));
+
   await Pictures.bulkCreate(picturesData);
 }
 
@@ -77,7 +85,6 @@ const updateOrCreateProductsFromFeed = async () => {
       });
 
       //если создан то обновляем его
-
       if (!created) {
         await product.update({
           product_description: x.description,

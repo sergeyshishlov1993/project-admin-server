@@ -36,7 +36,7 @@ module.exports = function (sequelize) {
       },
     },
     {
-      timestamps: true, // Включення автоматичного керування часовими мітками
+      timestamps: true,
       tableName: "Reviews",
     }
   );

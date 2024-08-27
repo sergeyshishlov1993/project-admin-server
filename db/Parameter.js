@@ -8,9 +8,8 @@ module.exports = function (sequelize) {
         type: Sequelize.STRING(255),
         allowNull: false,
         references: {
-          // Вказуємо, що це внешний ключ
-          model: "Products", // назва таблиці, до якої він відноситься
-          key: "product_id", // поле в таблиці Products, на яке він вказує
+          model: "Products",
+          key: "product_id",
         },
       },
 
