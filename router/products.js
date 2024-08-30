@@ -188,9 +188,10 @@ router.get("/:sub_category_id", async (req, res) => {
 
 router.get("/:id/review", async (req, res) => {
   try {
-    const limit = 5;
+    const limit = parseInt(req.query.limit) || 5;
     const offset = parseInt(req.query.offset) || 0;
-    const reviews = await Review.findAll({
+
+    const reviews = await Review.findAndCountAll({
       where: { product_id: req.params.id },
       limit: limit,
       offset: offset,
@@ -198,12 +199,15 @@ router.get("/:id/review", async (req, res) => {
     });
 
     res.status(200).json({
-      message: `это отзывы продукта id ${req.params.id}`,
-      reviews: reviews,
+      message: `Це відгуки продукта id ${req.params.id}`,
+      reviews: reviews.rows,
+      total: reviews.count,
+      currentPage: Math.floor(offset / limit) + 1,
+      totalPages: Math.ceil(reviews.count / limit),
     });
   } catch (error) {
-    console.error("Ошибка при обновлении данных:", error);
-    res.status(500).json({ message: "Ошибка при обновлении данных" });
+    console.error("Помилка при отриманні даних:", error);
+    res.status(500).json({ message: "Помилка при отриманні даних" });
   }
 });
 
