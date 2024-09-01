@@ -1,12 +1,10 @@
 "use strict";
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("ReviewResponses", {
       response_id: {
         type: Sequelize.UUID,
-        allowNull: false,
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4,
       },
@@ -33,26 +31,26 @@ module.exports = {
       },
 
       admin_response: {
-        type: Sequelize.TINYINT(1),
+        type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 0,
       },
 
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
 
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable("ReviewResponses");
   },
 };

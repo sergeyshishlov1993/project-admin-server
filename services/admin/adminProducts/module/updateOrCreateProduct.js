@@ -27,7 +27,12 @@ async function handlePictures(product_id, pictures) {
     pictures_name: picture,
   }));
 
-  await Pictures.bulkCreate(picturesData);
+  try {
+    // TODO :: try catch just for temporary fix issue
+    await Pictures.bulkCreate(picturesData);
+  } catch (e) {
+    console.log(e.message);
+  }
 }
 
 //наполняем дочернюю таблицу параметров
@@ -56,6 +61,8 @@ const updateOrCreateProductsFromFeed = async () => {
     //получаем массив продуктов
     offers.offer.forEach(async (x) => {
       let discount = ((+x.oldprice - x.price) * 100) / x.price;
+      discount = isNaN(discount) ? 0 : Math.floor(discount);
+
       if (x.oldprice) {
         const [product, created] = await Products.findOrCreate({
           where: { product_id: x.$.id },
@@ -66,7 +73,7 @@ const updateOrCreateProductsFromFeed = async () => {
             price: x.oldprice,
             sale_price: x.price,
             sale: x.oldprice ? "true" : "false",
-            discount: Math.floor(discount),
+            discount: discount,
             available: x.$.available,
           },
         });
@@ -92,7 +99,7 @@ const updateOrCreateProductsFromFeed = async () => {
           price: x.oldprice || x.price,
           sale_price: x.oldprice ? x.price : 0,
           sale: x.oldprice ? "true" : "false",
-          discount: discount || 0,
+          discount: discount,
         });
       }
 
@@ -102,6 +109,8 @@ const updateOrCreateProductsFromFeed = async () => {
     });
   } catch (error) {
     console.error("Error during feed processing: ", error);
+
+    console.log(x);
   }
 };
 

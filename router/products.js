@@ -292,6 +292,7 @@ router.post("/add", async (req, res) => {
       product_id: req.body.id,
       pictures_name: picture,
     }));
+
     await Pictures.bulkCreate(picturesData);
 
     //параметры к кастамному товару

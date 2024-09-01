@@ -1,10 +1,17 @@
+require("dotenv").config();
+
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize("test", "root", "Shishlov1993", {
-  dialect: "mysql",
-  host: "127.0.0.1",
-  logging: false,
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    dialect: process.env.DB_DIALECT,
+    host: process.env.DB_HOST,
+    logging: false,
+  }
+);
 
 const Products = require("./Products")(sequelize);
 const Pictures = require("./Pictures")(sequelize);
@@ -21,7 +28,7 @@ const Admin = require("./Login")(sequelize);
 
 Products.hasMany(Pictures, {
   as: "pictures",
-  foreignKey: "product_id", // установка внешнего ключа
+  foreignKey: "product_id",
   onDelete: "CASCADE",
 });
 
@@ -31,7 +38,7 @@ Pictures.belongsTo(Products, {
 
 Products.hasMany(Parameter, {
   as: "param",
-  foreignKey: "product_id", // установка внешнего ключа
+  foreignKey: "product_id",
   onDelete: "CASCADE",
 });
 
@@ -41,7 +48,7 @@ Parameter.belongsTo(Products, {
 
 Products.hasMany(Review, {
   as: "review",
-  foreignKey: "product_id", // установка внешнего ключа
+  foreignKey: "product_id",
   onDelete: "CASCADE",
 });
 
@@ -50,27 +57,26 @@ Review.belongsTo(Products, {
 });
 
 Review.hasMany(ReviewResponse, {
-  as: "reviewResponses", // Виправлено псевдонім
-  foreignKey: "review_id", // Виправлено ключ з'єднання
+  as: "reviewResponses",
+  foreignKey: "review_id",
   onDelete: "CASCADE",
 });
 
 ReviewResponse.belongsTo(Review, {
-  foreignKey: "review_id", // Виправлено ключ з'єднання
+  foreignKey: "review_id",
 });
 
 Order.hasMany(OrderItem, {
-  as: "orderItem", // Виправлено псевдонім
-  foreignKey: "order_id", // Виправлено ключ з'єднання
+  as: "orderItem",
+  foreignKey: "order_id",
   onDelete: "CASCADE",
 });
 
 OrderItem.belongsTo(Order, {
-  foreignKey: "order_id", // Виправлено ключ з'єднання
+  foreignKey: "order_id",
 });
 
 module.exports = {
-  // sequelize: sequelize.sync({ force: true }),
   sequelize: sequelize.sync(),
   products: Products,
   pictures: Pictures,

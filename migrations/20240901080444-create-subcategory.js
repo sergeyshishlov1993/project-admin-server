@@ -6,20 +6,17 @@ module.exports = {
     await queryInterface.createTable("sub_category", {
       sub_category_id: {
         type: Sequelize.STRING(255),
-        allowNull: false,
         primaryKey: true,
+        allowNull: false,
       },
-
       parent_id: {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
-
       sub_category_name: {
         type: Sequelize.STRING(255),
         allowNull: false,
       },
-
       pictures: {
         type: Sequelize.STRING(255),
         allowNull: true,

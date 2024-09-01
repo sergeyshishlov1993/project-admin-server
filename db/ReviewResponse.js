@@ -30,7 +30,7 @@ module.exports = function (sequelize) {
       },
 
       admin_response: {
-        type: Sequelize.TINYINT(1),
+        type: Sequelize.SMALLINT(1),
         allowNull: false,
         defaultValue: 0,
       },

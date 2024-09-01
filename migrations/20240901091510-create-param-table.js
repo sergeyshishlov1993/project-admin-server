@@ -1,14 +1,19 @@
 "use strict";
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("param", {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true,
+      },
+
       product_id: {
         type: Sequelize.STRING(255),
         allowNull: false,
         references: {
-          model: "Products",
+          model: "products",
           key: "product_id",
         },
         onUpdate: "CASCADE",
@@ -17,29 +22,27 @@ module.exports = {
 
       parameter_name: {
         type: Sequelize.STRING(255),
-        allowNull: true,
       },
 
       parameter_value: {
         type: Sequelize.STRING(255),
-        allowNull: true,
       },
 
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
 
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable("param");
   },
 };

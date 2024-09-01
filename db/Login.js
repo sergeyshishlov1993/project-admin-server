@@ -21,7 +21,7 @@ module.exports = function (sequelize) {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
       tableName: "admin",
     }
   );

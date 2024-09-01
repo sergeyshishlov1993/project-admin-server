@@ -1,11 +1,17 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 module.exports = function (sequelize) {
   return sequelize.define(
     "Pictures",
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+
       product_id: {
-        type: Sequelize.STRING(255),
+        type: DataTypes.STRING(255),
         allowNull: false,
         references: {
           model: "Products",
@@ -14,7 +20,7 @@ module.exports = function (sequelize) {
       },
 
       pictures_name: {
-        type: Sequelize.STRING(255),
+        type: DataTypes.STRING(255),
       },
     },
     {

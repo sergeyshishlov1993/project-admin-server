@@ -13,7 +13,7 @@ const {
 const updateOrCreateProductsFromFeed = require("./module/updateOrCreateProduct");
 const addCategoryValue = require("./module/addCategoryValue");
 
-router.get("/add_category", async (req, res) => {
+router.put("/add_category", async (req, res) => {
   try {
     await addCategoryValue();
     res.json({ message: "Data synchronized" });

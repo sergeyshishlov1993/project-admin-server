@@ -9,22 +9,19 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-
       name: {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        defaultValue: Sequelize.fn("NOW"),
       },
-
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        defaultValue: Sequelize.fn("NOW"),
       },
     });
   },
