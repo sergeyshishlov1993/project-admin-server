@@ -134,14 +134,22 @@ router.put("/category/:sub_category/update", async (req, res) => {
   }
 });
 
-router.delete("/category/:sub_category/delete", async (req, res) => {
+router.delete("/category/:id/delete", async (req, res) => {
+  const tableName = req.query.name;
+
   try {
-    const subCategory = await SubCategory.destroy({
-      where: { sub_category_id: req.params.sub_category },
-    });
+    if (tableName == "category") {
+      const categorys = await Category.destroy({
+        where: { id: req.params.id },
+      });
+    } else {
+      const subCategory = await SubCategory.destroy({
+        where: { sub_category_id: req.params.id },
+      });
+    }
 
     res.status(200).json({
-      message: `категорію успішно видалено ${req.params.sub_category}`,
+      message: `категорію успішно видалено  з таблиці ${tableName}, ${req.params.id}`,
     });
   } catch (error) {
     console.error("Ошибка при обновлении данных:", error);
@@ -342,6 +350,7 @@ async function createFeedback(
 
 //оставить отзыв об одном товаре
 router.post("/:id/review", async (req, res) => {
+  console.log("id", req.params.id);
   try {
     await createFeedback(
       req.params.id,

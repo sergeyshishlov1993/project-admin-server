@@ -26,9 +26,10 @@ router.put("/add_category", async (req, res) => {
 
 //получение всех категорий
 
-router.get("/category", async (req, res) => {
+router.get("/sub-category", async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
+    const category = await Category.findAll();
     const subCategory = await SubCategory.findAndCountAll({
       distinct: true,
 
@@ -38,6 +39,7 @@ router.get("/category", async (req, res) => {
 
     res.status(200).json({
       message: "категория",
+      category: category,
       subCategory: subCategory.rows,
       totalItems: subCategory.count,
       totalPages: Math.ceil(subCategory.count / limit),
