@@ -2,7 +2,6 @@ const { Router } = require("express");
 const router = Router();
 
 const getProductByStatus = require("../module/getProductByStatus");
-console.log("working..");
 
 //дописать логику получение данных для слайдера на основной странице
 
