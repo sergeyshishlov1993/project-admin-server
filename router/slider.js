@@ -13,7 +13,7 @@ router.post("/add", async (req, res) => {
     });
 
     res.status(200).json({
-      message: "добавленны картинки на основной слайдер, test",
+      message: "добавленны картинки на основной слайдер",
       slider,
     });
   } catch (error) {
@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
     const slider = await sliderImg.findAll();
 
     res.status(200).json({
-      message: "это слайдер",
+      message: "это слайдер, test",
       slider,
     });
   } catch (error) {
