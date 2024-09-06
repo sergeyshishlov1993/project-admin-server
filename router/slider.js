@@ -13,7 +13,7 @@ router.post("/add", async (req, res) => {
     });
 
     res.status(200).json({
-      message: "добавленны картинки на основной слайдер",
+      message: "добавленны картинки на основной слайдер, test",
       slider,
     });
   } catch (error) {
