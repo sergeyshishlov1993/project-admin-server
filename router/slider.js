@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
     const slider = await sliderImg.findAll();
 
     res.status(200).json({
-      message: "это слайдер, test",
+      message: "это слайдер",
       slider,
     });
   } catch (error) {
