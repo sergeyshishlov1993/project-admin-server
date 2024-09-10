@@ -157,6 +157,24 @@ router.delete("/category/:id/delete", async (req, res) => {
   }
 });
 
+router.post("/category/add", async (req, res) => {
+  try {
+    const subCategory = await SubCategory.create({
+      sub_category_id: req.body.id,
+      parent_id: req.body.category,
+      sub_category_name: req.body.categoryName,
+      pictures: req.body.picture,
+    });
+
+    res.status(200).json({
+      message: "категория добавлена",
+    });
+  } catch (error) {
+    console.error("Ошибка при обновлении данных:", error);
+    res.status(500).json({ message: "Ошибка при обновлении данных" });
+  }
+});
+
 // все товары и отзывы
 router.get("/:sub_category_id", async (req, res) => {
   try {

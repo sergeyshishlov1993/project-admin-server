@@ -12,6 +12,7 @@ const {
 } = require("../../../db");
 const updateOrCreateProductsFromFeed = require("./module/updateOrCreateProduct");
 const addCategoryValue = require("./module/addCategoryValue");
+const writeProductsCSV = require("./module/parsingProfitecCSV");
 
 router.put("/add_category", async (req, res) => {
   try {
@@ -162,6 +163,19 @@ router.get("/:id", async (req, res) => {
 });
 
 //добавление всех товаров с загрузочной ссылки
+
+router.put("/write-profitec", async (req, res) => {
+  try {
+    await writeProductsCSV();
+
+    res.status(200).json({ message: "Товари Profitec успішно завантажені" });
+  } catch (error) {
+    res.status(500).json({
+      message: "Помилка завантаження товарів Profitec",
+      error: error.message,
+    });
+  }
+});
 
 router.put("/update-or-create", async (req, res) => {
   try {

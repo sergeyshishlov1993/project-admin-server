@@ -10,7 +10,7 @@ module.exports = function (sequelize) {
       },
 
       sub_category_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(255),
       },
 
       product_description: {
