@@ -12,11 +12,21 @@ const {
   subCategory: SubCategory,
 } = require("../../../../db");
 
-// Функція для створення масиву URL зображень
 function createImagesArray(imageNames) {
   return imageNames.split(",").map((image) => {
-    const imageNameWithoutExtension = image.trim().replace(".jpg", ""); // Видаляємо ".jpg" і обрізаємо пробіли
-    return `https://profi-tec.com.ua/files/resized/products/${imageNameWithoutExtension}.700x800.jpg`;
+    const imageNameTrimmed = image.trim();
+    let extension = "jpg";
+
+    if (imageNameTrimmed.endsWith(".png")) {
+      extension = "png";
+    }
+
+    const imageNameWithoutExtension = imageNameTrimmed.replace(
+      /\.jpg|\.png$/,
+      ""
+    );
+
+    return `https://profi-tec.com.ua/files/resized/products/${imageNameWithoutExtension}.700x800.${extension}`;
   });
 }
 
