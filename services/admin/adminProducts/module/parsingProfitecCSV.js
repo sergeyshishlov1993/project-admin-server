@@ -149,8 +149,9 @@ function parseCsvFile(categoriesData) {
 
       // Заповнення або оновлення таблиці продуктів
       const [product, created] = await Products.findOrCreate({
-        where: { product_id },
+        where: { product_name: row.Product },
         defaults: {
+          product_id: uuidv4(),
           sub_category_id: subCategoryId,
           product_description: row.Description,
           product_name: row.Product,
@@ -159,21 +160,20 @@ function parseCsvFile(categoriesData) {
         },
       });
 
-      // Якщо продукт існує, оновлюємо інші поля
       if (!created) {
         await product.update({
           product_description: row.Description,
           product_name: row.Product,
           price: row.Price,
-          sale_price: 0, // Знижка
-          sale: "false", // Немає знижки
-          discount: 0, // Знижка у відсотках
+          sale_price: 0,
+          sale: "false",
+          discount: 0,
         });
       }
 
       // Оновлюємо дочірні таблиці для зображень і параметрів
-      await handlePictures(product_id, imagesArray);
-      await handleParameters(product_id, parametersArray);
+      await handlePictures(product.product_id, imagesArray);
+      await handleParameters(product.product_id, parametersArray);
     })
     .on("end", () => {
       console.log("CSV файл успішно оброблено.");
