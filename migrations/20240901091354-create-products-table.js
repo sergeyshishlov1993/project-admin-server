@@ -53,6 +53,11 @@ module.exports = {
         defaultValue: false,
       },
 
+      brand: {
+        type: Sequelize.STRING(255),
+        allowNull: true,
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -53,6 +53,11 @@ module.exports = function (sequelize) {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+
+      brand: {
+        type: Sequelize.STRING(255),
+        allowNull: true,
+      },
     },
     {
       timestamps: true,

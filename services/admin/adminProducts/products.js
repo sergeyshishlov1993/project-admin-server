@@ -276,6 +276,33 @@ router.post("/add", async (req, res) => {
   }
 });
 
+router.delete("/destroy-product-by-brand", async (req, res) => {
+  try {
+    // Перевірка наявності параметру бренду
+    const { brand } = req.query;
+
+    if (!brand || brand.trim() === "") {
+      return res.status(400).json({ message: "Бренд не вказано або порожній" });
+    }
+
+    // Видаляємо товари за брендом
+    const product = await Product.destroy({
+      where: { brand: brand },
+    });
+
+    // Перевірка кількості видалених товарів
+    if (product > 0) {
+      res.status(200).json({
+        message: `Видалено ${product} товарів бренду ${brand}`,
+      });
+    } else {
+      res.status(404).json({ message: `Товари бренду ${brand} не знайдено` });
+    }
+  } catch (error) {
+    console.error("Помилка при видаленні товару:", error);
+    res.status(500).json({ message: "Помилка при видаленні товару" });
+  }
+});
 //удаление товара
 
 router.delete("/:id", async (req, res) => {
@@ -368,6 +395,7 @@ router.get("/", async (req, res) => {
     sub_category,
     sale = "",
     bestseller = "",
+    brand = "",
   } = req.query;
 
   try {
@@ -389,6 +417,10 @@ router.get("/", async (req, res) => {
 
     if (bestseller && bestseller !== "undefined") {
       whereCondition.bestseller = bestseller;
+    }
+
+    if (brand && brand !== "undefined" && brand.trim() !== " ") {
+      whereCondition.brand = brand;
     }
 
     const products = await Product.findAndCountAll({

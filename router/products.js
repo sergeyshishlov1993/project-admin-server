@@ -14,15 +14,22 @@ const {
 
 router.get("/search", async (req, res) => {
   try {
-    const query = req.query.search;
+    const query = req.query.search || "";
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 8;
+    const offset = (page - 1) * limit;
 
-    const products = await Product.findAll({
+    // Пошук товарів
+    const { count, rows: products } = await Product.findAndCountAll({
+      distinct: true,
+
       where: {
         product_name: {
           [Op.like]: "%" + query + "%",
         },
       },
-      limit: 5,
+      offset: offset,
+      limit: limit,
       include: [
         {
           model: Pictures,
@@ -45,9 +52,16 @@ router.get("/search", async (req, res) => {
       ],
     });
 
+    // Повернення кількості сторінок та поточної сторінки
+    const totalPages = Math.ceil(count / limit);
+
     res.status(200).json({
       message: "Продукти знайдено успішно",
       products: products,
+      totalItems: count, // Загальна кількість товарів
+      totalPages: totalPages, // Загальна кількість сторінок
+      currentPage: page, // Поточна сторінка
+      perPage: limit, // Кількість товарів на сторінку
     });
   } catch (error) {
     console.error("Ошибка при поиске продуктов:", error);

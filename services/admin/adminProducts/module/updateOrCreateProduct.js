@@ -88,6 +88,7 @@ const updateOrCreateProductsFromFeed = async () => {
           product_name: x.name,
           price: x.price,
           available: x.$.available,
+          brand: "Procraft",
         },
       });
 
@@ -100,6 +101,7 @@ const updateOrCreateProductsFromFeed = async () => {
           sale_price: x.oldprice ? x.price : 0,
           sale: x.oldprice ? "true" : "false",
           discount: discount,
+          brand: "Procraft",
         });
       }
 

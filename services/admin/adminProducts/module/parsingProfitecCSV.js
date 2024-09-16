@@ -167,6 +167,7 @@ function parseCsvFile(categoriesData) {
           product_name: row.Product,
           price: row.Price,
           available: "true",
+          brand: "Profitec",
         },
       });
 
@@ -178,6 +179,7 @@ function parseCsvFile(categoriesData) {
           sale_price: 0,
           sale: "false",
           discount: 0,
+          brand: "Profitec",
         });
       }
 
