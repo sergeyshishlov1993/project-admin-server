@@ -403,7 +403,6 @@ router.post("/:id/review", async (req, res) => {
 });
 
 router.post("/:id/review/:reviewId/responses", async (req, res) => {
-  console.log("id", req.params.reviewId);
   try {
     if (req.body.nikname === "saw store") {
       await createFeedback(
@@ -432,6 +431,19 @@ router.post("/:id/review/:reviewId/responses", async (req, res) => {
   } catch (error) {
     console.error("Ошибка при обновлении данных:", error);
     res.status(500).json({ message: "Ошибка при обновлении данных" });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const products = await Product.findAll();
+
+    res.status(200).json({
+      message: "товары",
+      products: products,
+    });
+  } catch (error) {
+    console.error("помилка", error);
   }
 });
 
