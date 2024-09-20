@@ -19,13 +19,11 @@ router.get("/search", async (req, res) => {
     const limit = parseInt(req.query.limit) || 8;
     const offset = (page - 1) * limit;
 
-    // Пошук товарів
     const { count, rows: products } = await Product.findAndCountAll({
       distinct: true,
-
       where: {
         product_name: {
-          [Op.like]: "%" + query + "%",
+          [Op.iLike]: `%${query}%`, 
         },
       },
       offset: offset,
@@ -52,20 +50,13 @@ router.get("/search", async (req, res) => {
       ],
     });
 
-    // Повернення кількості сторінок та поточної сторінки
-    const totalPages = Math.ceil(count / limit);
-
     res.status(200).json({
-      message: "Продукти знайдено успішно",
+      totalItems: count,
+      totalPages: Math.ceil(count / limit),
       products: products,
-      totalItems: count, // Загальна кількість товарів
-      totalPages: totalPages, // Загальна кількість сторінок
-      currentPage: page, // Поточна сторінка
-      perPage: limit, // Кількість товарів на сторінку
     });
   } catch (error) {
-    console.error("Ошибка при поиске продуктов:", error);
-    res.status(500).json({ message: "Ошибка при поиске продуктов" });
+    res.status(500).json({ error: "Сталася помилка при пошуку товарів" });
   }
 });
 
