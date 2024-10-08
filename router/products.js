@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
-const Sequelize = require("sequelize"); // Базовий імпорт Sequelize
-const { Op } = Sequelize; // Якщо ви використовуєте оператори Sequelize
+const Sequelize = require("sequelize");
+const { Op } = Sequelize;
 const {
   products: Product,
   review: Review,
@@ -23,7 +23,7 @@ router.get("/search", async (req, res) => {
       distinct: true,
       where: {
         product_name: {
-          [Op.iLike]: `%${query}%`, 
+          [Op.iLike]: `%${query}%`,
         },
       },
       offset: offset,
@@ -248,7 +248,6 @@ router.get("/:id/review/:reviewId/responses", async (req, res) => {
     const limit = all ? undefined : 1; // Якщо запит на всі дані, не обмежуємо кількість записів
     const offset = all ? undefined : parseInt(req.query.offset) || 0;
 
-    // Використання findAndCountAll для отримання як даних, так і загальної кількості
     const { count, rows } = await ReviewResponse.findAndCountAll({
       where: { review_id: req.params.reviewId },
       limit: limit,

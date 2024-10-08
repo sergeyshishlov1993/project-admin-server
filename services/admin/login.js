@@ -8,14 +8,12 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 let refreshTokens = [];
 
-// Генерація access токену
 const generateAccessToken = (user) => {
   return jwt.sign({ username: user.name, role: user.role }, accessTokenSecret, {
     expiresIn: "7d",
   });
 };
 
-// Генерація refresh токену
 const generateRefreshToken = (user) => {
   const refreshToken = jwt.sign(
     { username: user.name, role: user.role },
@@ -25,7 +23,6 @@ const generateRefreshToken = (user) => {
   return refreshToken;
 };
 
-// Функція для додавання адміністратора
 const addAdmin = async (username, password) => {
   try {
     const existingAdmin = await Admin.findOne({ where: { name: username } });
@@ -45,10 +42,8 @@ const addAdmin = async (username, password) => {
   }
 };
 
-// Ініціалізація маршрутизатора
 const router = Router();
 
-// Роут для створення нового адміністратора
 router.post("/add-admin", async (req, res) => {
   const { username, password } = req.body;
 
@@ -64,7 +59,6 @@ router.post("/add-admin", async (req, res) => {
   }
 });
 
-// Роут для аутентифікації
 router.post("/", async (req, res) => {
   const { username, password } = req.body;
   try {

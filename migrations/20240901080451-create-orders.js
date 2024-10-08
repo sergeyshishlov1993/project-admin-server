@@ -47,6 +47,10 @@ module.exports = {
         allowNull: false,
         defaultValue: "нове",
       },
+      qwery: {
+        type: Sequelize.STRING(255),
+        allowNull: true,
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

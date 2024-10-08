@@ -15,6 +15,7 @@ router.post("/add-order", async (req, res) => {
     totalPrice,
     orders,
     courierDeliveryAddress,
+    qwery,
   } = req.body;
 
   try {
@@ -28,6 +29,7 @@ router.post("/add-order", async (req, res) => {
       postal_office: warehouses,
       total_price: totalPrice,
       courier_delivery_address: courierDeliveryAddress,
+      qwery: qwery,
     });
 
     for (const item of orders) {

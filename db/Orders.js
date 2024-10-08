@@ -49,6 +49,11 @@ module.exports = function (sequelize) {
         allowNull: false,
         defaultValue: "нове",
       },
+
+      qwery: {
+        type: Sequelize.STRING(255),
+        allowNull: true,
+      },
     },
 
     {
