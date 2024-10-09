@@ -403,7 +403,7 @@ router.get("/", async (req, res) => {
 
     if (search.trim()) {
       whereCondition.product_name = {
-        [Sequelize.Op.like]: `%${search.trim()}%`,
+        [Sequelize.Op.iLike]: `%${search.trim()}%`,
       };
     }
 
