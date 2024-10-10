@@ -6,6 +6,7 @@ const { admin: Admin } = require("../../db");
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+
 let refreshTokens = [];
 
 const generateAccessToken = (user) => {
@@ -96,6 +97,8 @@ router.post("/", async (req, res) => {
 // Роут для оновлення токена
 router.post("/token", (req, res) => {
   const { token } = req.body;
+
+  console.log("token", token);
   if (!refreshTokens.includes(token)) {
     return res.sendStatus(403);
   }

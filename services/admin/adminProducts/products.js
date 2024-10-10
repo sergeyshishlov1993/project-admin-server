@@ -233,6 +233,37 @@ router.put("/update/:id", async (req, res) => {
   }
 });
 
+//обновление только по скидке
+router.put("/update-discount/:id", async (req, res) => {
+  const { discount, sale_price, sale } = req.body;
+
+  try {
+    const [updatedCount] = await Product.update(
+      {
+        discount: discount,
+        sale_price: sale_price,
+        sale: sale,
+      },
+      {
+        where: { product_id: req.params.id },
+      }
+    );
+
+    if (updatedCount > 0) {
+      res.status(200).json({
+        message: `Знижка та акційна ціна оновлені для товару з ID ${req.params.id}`,
+      });
+    } else {
+      res.status(404).json({ message: "Товар не знайдено" });
+    }
+  } catch (error) {
+    console.error("Помилка при оновленні знижки та акційної ціни:", error);
+    res
+      .status(500)
+      .json({ message: "Помилка при оновленні знижки та акційної ціни" });
+  }
+});
+
 //cоздаем один товар не из загрузочной ссылки
 router.post("/add", async (req, res) => {
   try {
