@@ -25,6 +25,7 @@ router.get("/search", async (req, res) => {
         product_name: {
           [Op.iLike]: `%${query}%`,
         },
+        available: "true",
       },
       offset: offset,
       limit: limit,
@@ -426,7 +427,11 @@ router.post("/:id/review/:reviewId/responses", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+      where: {
+        available: "true",
+      },
+    });
 
     res.status(200).json({
       message: "товары",
