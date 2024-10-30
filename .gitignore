@@ -16,10 +16,10 @@ pids/
 .DS_Store
 Thumbs.db
 
-# Env
-.env
-.env.local
-.env.*.local
+# # Env
+# .env
+# .env.local
+# .env.*.local
 
 # Build
 dist/
