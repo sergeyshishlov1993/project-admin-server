@@ -20,7 +20,7 @@ function sendPurchaseNotification(
   courierDeliveryAddress,
   totalPrice
 ) {
-  const message = `🛍️ Нова покупка!\n\nТовар: \n ${productName} \n\nПокупець:\n ${customerName}  ${secondName} \n ${phone}  \n\n Доставка: \n ${city} \n ${warehouses} \n ${courierDeliveryAddress} ${payment} \n \n Сумма: \n ${totalPrice} ₴`;
+  const message = `🛍️ Нове замовлення!\n\nТовар: \n ${productName} \n\nПокупець:\n ${customerName}  ${secondName} \n ${phone}  \n\n Доставка: \n ${city} \n ${warehouses} \n ${courierDeliveryAddress} ${payment} \n \n Сумма: \n ${totalPrice} ₴`;
 
   bot.sendMessage(chatId, message);
 }
