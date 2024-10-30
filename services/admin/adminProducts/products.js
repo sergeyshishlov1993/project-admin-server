@@ -430,7 +430,7 @@ router.get("/", async (req, res) => {
   } = req.query;
 
   try {
-    const whereCondition = {};
+    const whereCondition = { available: "true" };
 
     if (search.trim()) {
       whereCondition.product_name = {

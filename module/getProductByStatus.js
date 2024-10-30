@@ -8,7 +8,8 @@ const {
 
 async function getProductByStatus(tableColumn, limit) {
   const queryOptions = {
-    where: { [tableColumn]: "true" },
+    where: { [tableColumn]: "true", available: "true" },
+
     include: [
       {
         model: Pictures,

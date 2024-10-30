@@ -185,7 +185,10 @@ router.post("/category/add", async (req, res) => {
 router.get("/:sub_category_id", async (req, res) => {
   try {
     const products = await Product.findAll({
-      where: { sub_category_id: req.params.sub_category_id },
+      where: {
+        sub_category_id: req.params.sub_category_id,
+        available: "true",
+      },
       include: [
         {
           model: Pictures,

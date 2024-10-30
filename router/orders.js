@@ -1,7 +1,29 @@
 const { Router } = require("express");
 const { Sequelize } = require("sequelize");
+const TelegramBot = require("node-telegram-bot-api");
 const { order: Order, orderItem: OrderItems, order } = require("../db");
+const env = require("dotenv").config();
 const router = Router();
+
+const botToken = process.env.TELEGRAM_TOKKEN;
+const bot = new TelegramBot(botToken, { polling: false });
+const chatId = process.env.TELEGRAM_CHAT_ID;
+
+function sendPurchaseNotification(
+  productName,
+  customerName,
+  secondName,
+  phone,
+  city,
+  payment,
+  warehouses,
+  courierDeliveryAddress,
+  totalPrice
+) {
+  const message = `🛍️ Нова покупка!\n\nТовар: \n ${productName} \n\nПокупець:\n ${customerName}  ${secondName} \n ${phone}  \n\n Доставка: \n ${city} \n ${warehouses} \n ${courierDeliveryAddress} ${payment} \n \n Сумма: \n ${totalPrice} ₴`;
+
+  bot.sendMessage(chatId, message);
+}
 
 router.post("/add-order", async (req, res) => {
   const {
@@ -44,6 +66,22 @@ router.post("/add-order", async (req, res) => {
         discounted_product: item.discountProduct,
       });
     }
+
+    const productNames = orders
+      .map((item, index) => `${index + 1}. ${item.orderName}`)
+      .join("\n");
+
+    sendPurchaseNotification(
+      productNames,
+      name,
+      secondName,
+      phone,
+      city,
+      payment,
+      warehouses,
+      courierDeliveryAddress,
+      totalPrice
+    );
 
     res.status(200).json({ message: "Замовлення успішно додано." });
   } catch (error) {
