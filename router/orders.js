@@ -6,8 +6,17 @@ const env = require("dotenv").config();
 const router = Router();
 
 const botToken = process.env.TELEGRAM_TOKKEN;
-const bot = new TelegramBot(botToken, { polling: false });
-const chatId = process.env.TELEGRAM_CHAT_ID;
+const bot = new TelegramBot(botToken, { polling: true });
+let chatId = [];
+
+bot.on("message", (msg) => {
+  if (!chatId.includes(msg.chat.id)) {
+    chatId.push(msg.chat.id);
+    console.log(`Chat ID отримано: ${chatId}`);
+
+    bot.sendMessage(msg.chat.id, "Дякуємо за ініціалізацію бота!");
+  }
+});
 
 function sendPurchaseNotification(
   productName,
@@ -22,7 +31,9 @@ function sendPurchaseNotification(
 ) {
   const message = `🛍️ Нове замовлення!\n\nТовар: \n ${productName} \n\nПокупець:\n ${customerName}  ${secondName} \n ${phone}  \n\n Доставка: \n ${city} \n ${warehouses} \n ${courierDeliveryAddress} ${payment} \n \n Сумма: \n ${totalPrice} ₴`;
 
-  bot.sendMessage(chatId, message);
+  chatId.forEach((el) => {
+    bot.sendMessage(el, message);
+  });
 }
 
 router.post("/add-order", async (req, res) => {
