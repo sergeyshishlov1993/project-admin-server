@@ -163,13 +163,27 @@ router.delete("/delete/:id", async (req, res) => {
 
 router.get("/all-orders", async (req, res) => {
   const { page = 1, limit = 10, search = "" } = req.query;
+  const year = req.query.year || null;
+  const month = req.query.month || null;
+
+  console.log("Параметри запиту:", { year, month });
 
   try {
     const whereCondition = {};
 
     if (search.trim()) {
       whereCondition.phone = {
-        [Sequelize.Op.like]: `%${search.trim()}%`,
+        [Sequelize.Op.iLike]: `%${search.trim()}%`,
+      };
+    }
+
+    if (year !== null && month !== null && year !== "" && month !== "") {
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 1);
+
+      whereCondition.createdAt = {
+        [Sequelize.Op.gte]: startDate,
+        [Sequelize.Op.lt]: endDate,
       };
     }
 
@@ -182,7 +196,6 @@ router.get("/all-orders", async (req, res) => {
           as: "orderItem",
         },
       ],
-
       offset: (page - 1) * limit,
       limit: limit,
       order: [["createdAt", "DESC"]],
@@ -199,17 +212,16 @@ router.get("/all-orders", async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      message: "Заказы",
+    return res.status(200).json({
+      message: "Замовлення знайдено",
       orders: orders.rows,
       totalItems: orders.count,
       totalPages: Math.ceil(orders.count / limit),
       currentPage: parseInt(page),
-      notFound: false,
     });
   } catch (error) {
-    console.error("Ошибка при получение:", error);
-    res.status(500).json({ message: "Ошибка при обновлении данных" });
+    console.error("Помилка при отриманні замовлень:", error);
+    return res.status(500).json({ message: "Помилка сервера" });
   }
 });
 
