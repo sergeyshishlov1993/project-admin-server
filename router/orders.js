@@ -162,11 +162,9 @@ router.delete("/delete/:id", async (req, res) => {
 });
 
 router.get("/all-orders", async (req, res) => {
-  const { page = 1, limit = 10, search = "" } = req.query;
+  const { page = 1, limit = 10, search = "", status = "" } = req.query;
   const year = req.query.year || null;
   const month = req.query.month || null;
-
-  console.log("Параметри запиту:", { year, month });
 
   try {
     const whereCondition = {};
@@ -185,6 +183,10 @@ router.get("/all-orders", async (req, res) => {
         [Sequelize.Op.gte]: startDate,
         [Sequelize.Op.lt]: endDate,
       };
+    }
+
+    if (status.trim()) {
+      whereCondition.status = status.trim();
     }
 
     const orders = await Order.findAndCountAll({
