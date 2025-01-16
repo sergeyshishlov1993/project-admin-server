@@ -52,8 +52,9 @@ async function handleParameters(product_id, parameters) {
 const updateOrCreateProductsFromFeed = async () => {
   try {
     //парсим загрузочную ссылку
+
     const response = await axios.get(
-      "https://procraft.ua/ua/index.php?route=extension/feed/unixml/Market_plase"
+      "https://procraft.ua/ua/index.php?route=extension/feed/unixml/feed_market"
     );
     const result = await parseStringPromise(response.data);
     const { offers } = result.yml_catalog.shop;

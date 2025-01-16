@@ -9,42 +9,67 @@ const {
   subCategory: SubCategory,
 } = require("../../../../db");
 
-//основная функция
 const addCategoryValue = async () => {
   try {
-    //парсим загрузочную ссылку
     const response = await axios.get(
-      "https://procraft.ua/ua/index.php?route=extension/feed/unixml/Market_plase"
+      "https://procraft.ua/ua/index.php?route=extension/feed/unixml/feed_market"
     );
     const result = await parseStringPromise(response.data);
-    const { categories } = await result.yml_catalog.shop;
-    const category = [];
-    const subCategory = [];
 
-    categories.category.forEach(async (x) => {
+    const { categories } = result.yml_catalog.shop;
+
+    console.log("CATEGORY", categories);
+
+    // Обработка категорий и подкатегорий
+    for (const x of categories.category) {
       if (x.$.parentId) {
-        subCategory.push(x);
+        // Работа с подкатегориями
         try {
-          await SubCategory.create({
-            sub_category_id: x.$.id,
-            parent_id: x.$.parentId,
-            sub_category_name: x._,
+          const [subCategory, created] = await SubCategory.findOrCreate({
+            where: { sub_category_id: x.$.id },
+            defaults: {
+              parent_id: x.$.parentId,
+              sub_category_name: x._,
+            },
           });
+
+          if (!created) {
+            // Если подкатегория существует, обновляем её
+            await subCategory.update({
+              parent_id: x.$.parentId,
+              sub_category_name: x._,
+            });
+          }
         } catch (error) {
-          console.error("Помилка при створенні підкатегорії:", error);
+          console.error(
+            "Помилка при створенні або оновленні підкатегорії:",
+            error
+          );
         }
       } else {
-        category.push(x);
+        // Работа с категориями
         try {
-          await Category.create({
-            id: x.$.id,
-            category_name: x._,
+          const [category, created] = await Category.findOrCreate({
+            where: { id: x.$.id },
+            defaults: {
+              category_name: x._,
+            },
           });
+
+          if (!created) {
+            // Если категория существует, обновляем её
+            await category.update({
+              category_name: x._,
+            });
+          }
         } catch (error) {
-          console.error("Помилка при створенні категорії:", error);
+          console.error(
+            "Помилка при створенні або оновленні категорії:",
+            error
+          );
         }
       }
-    });
+    }
   } catch (error) {
     console.error("Error during feed processing: ", error);
   }
